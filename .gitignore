@@ -1,0 +1,26 @@
+# ENV FILES
+.env
+
+# NODE
+node_modules/
+dist/
+build/
+
+# RUST
+target/
+**/*.rs.bk
+
+# LOGS
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# CARGO LOCK (optional for apps, keep for libs if needed)
+# Cargo.lock
