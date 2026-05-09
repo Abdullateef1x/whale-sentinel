@@ -73,8 +73,10 @@ export default function SignalFeed() {
                     "SOL",
 
                   type:
-                    signal.signal ||
-                    "HOLD",
+                    signal.signal ===
+                    "SELL"
+                      ? "SELL"
+                      : "BUY",
 
                   signalScore: Number(
                     (
