@@ -1,20 +1,16 @@
-import app from "./app.js";
+import app from "./app";
 import { createServer } from "http";
-import { Server } from "socket.io";
+import { initSocket } from "./socket";
+import { startSolanaStream } from "./services/solana.stream";
 
 const PORT = process.env.PORT || 5000;
 
 const httpServer = createServer(app);
 
-export const io = new Server(httpServer, {
-  cors: {
-    origin: "*",
-  },
-});
+initSocket(httpServer);
 
-io.on("connection", (socket) => {
-  console.log("⚡ Client connected:", socket.id);
-});
+// 🚀 START REAL BLOCKCHAIN STREAM
+startSolanaStream();
 
 httpServer.listen(PORT, () => {
   console.log(`🚀 API + WebSocket running on ${PORT}`);

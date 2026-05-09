@@ -1,6 +1,90 @@
 @import "tailwindcss";
 
+:root {
+  --bg-primary: #0b0e11;
+  --bg-secondary: #11151c;
+  --border-color: #1e2329;
+
+  --text-primary: #eaecef;
+  --text-secondary: #848e9c;
+
+  --green: #0ecb81;
+  --red: #f6465d;
+  --yellow: #f0b90b;
+  --blue: #3772ff;
+}
+
+html,
 body {
-  background-color: black;
-  color: white;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+
+  font-family: Inter, sans-serif;
+
+  overflow: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #222;
+}
+
+.terminal-grid {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+
+  background-size: 40px 40px;
+}
+
+/* LIVE TICKER */
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: tickerScroll 40s linear infinite;
+}
+
+.ticker-item {
+  padding: 14px 40px;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 500;
+  color: #d4d4d8;
+  border-right: 1px solid #27272a;
+}
+
+@keyframes tickerScroll {
+  from {
+    transform: translateX(0%);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ALERT ANIMATION */
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.35s ease-out;
 }

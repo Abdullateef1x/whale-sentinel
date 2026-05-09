@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { socket } from "@/services/socket";
-import WhaleRow from "@/components/whales/WhaleRow"
+import WhaleRow from "./WhaleRow";
 
 type Whale = {
   wallet: string;
@@ -13,23 +13,76 @@ type Whale = {
   status: "ACCUMULATING" | "DISTRIBUTING";
 };
 
+const starterData: Whale[] = [
+  {
+    wallet: "9xQe...4mZp",
+    token: "BONK",
+    action: "Heavy Buying",
+    volume: "$420K",
+    pnl: "+18%",
+    status: "ACCUMULATING",
+  },
+
+  {
+    wallet: "8LmR...TkQa",
+    token: "WIF",
+    action: "Position Scaling",
+    volume: "$811K",
+    pnl: "+31%",
+    status: "ACCUMULATING",
+  },
+
+  {
+    wallet: "3FgA...PqLs",
+    token: "JUP",
+    action: "Profit Taking",
+    volume: "$290K",
+    pnl: "-4%",
+    status: "DISTRIBUTING",
+  },
+];
+
 export default function WhaleTable() {
   const [whales, setWhales] =
-    useState<Whale[]>([]);
+    useState<Whale[]>(starterData);
 
   useEffect(() => {
-    // 🧠 initial backend load
-    fetch("http://localhost:5000/api/whales")
-      .then((res) => res.json())
-      .then(setWhales);
+    socket.on("new-signal", (signal) => {
+      const bullish =
+        signal.signal === "BUY";
 
-    // ⚡ realtime updates
-    socket.on("whale-update", (data) => {
-      setWhales(data);
+      const newWhale: Whale = {
+        wallet:
+          Math.random()
+            .toString(36)
+            .substring(2, 8) + "...X9p",
+        token: signal.token,
+        action: bullish
+          ? "Accumulating"
+          : "Distributing",
+        volume: `$${Math.floor(
+          Math.random() * 900
+        )}K`,
+        pnl: bullish
+          ? `+${Math.floor(
+              Math.random() * 40
+            )}%`
+          : `-${Math.floor(
+              Math.random() * 12
+            )}%`,
+        status: bullish
+          ? "ACCUMULATING"
+          : "DISTRIBUTING",
+      };
+
+      setWhales((prev) => [
+        newWhale,
+        ...prev,
+      ]);
     });
 
     return () => {
-      socket.off("whale-update");
+      socket.off("new-signal");
     };
   }, []);
 
@@ -43,14 +96,14 @@ export default function WhaleTable() {
           </h2>
 
           <p className="text-xs text-zinc-500 mt-1">
-            Real-time whale wallet intelligence
+            Whale wallet intelligence
           </p>
         </div>
 
         <div className="flex items-center gap-2 text-xs text-[var(--green)]">
           <span className="w-2 h-2 rounded-full bg-[var(--green)] animate-pulse"></span>
 
-          LIVE
+          TRACKING
         </div>
       </div>
 
